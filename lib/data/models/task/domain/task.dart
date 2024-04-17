@@ -1,3 +1,4 @@
+import 'package:sembast/timestamp.dart';
 import 'package:task_manager_app/data/models/task/dto/task_dto.dart';
 
 import '../../enums/priority/domain/priority.dart';
@@ -23,5 +24,13 @@ class Task {
         description: dto.description,
         priority: Priority.fromDto(dto.priority),
         deadlineAt: dto.deadlineAt.toDateTime(),
+      );
+
+  TaskDto toDto() => TaskDto(
+        id: id,
+        title: title,
+        description: description,
+        priority: priority.toDto(),
+        deadlineAt: Timestamp.fromDateTime(deadlineAt),
       );
 }

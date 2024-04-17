@@ -18,3 +18,18 @@ enum Priority {
     }
   }
 }
+
+extension PriorityExtension on Priority {
+  PriorityDto toDto() {
+    switch (this) {
+      case Priority.low:
+        return PriorityDto.low;
+      case Priority.medium:
+        return PriorityDto.medium;
+      case Priority.high:
+        return PriorityDto.high;
+      default:
+        return PriorityDto.medium;
+    }
+  }
+}
