@@ -15,8 +15,16 @@ final class TasksLoading extends TasksState {
   const TasksLoading();
 }
 
-final class TasksPopulated extends TasksState {
-  const TasksPopulated();
+final class TasksPopulatedSuccess extends TasksState {
+  final List<Task> tasks;
+
+  const TasksPopulatedSuccess(this.tasks);
+}
+
+final class TasksPopulatedFailure extends TasksState {
+  final GeneralError error;
+
+  const TasksPopulatedFailure(this.error);
 }
 
 final class TasksFiltered extends TasksState {

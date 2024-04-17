@@ -8,10 +8,8 @@ import '../models/task/domain/task.dart' as model;
 abstract class TasksRepository {
   Future<Either<GeneralError, void>> add(model.Task item);
   //TODO: add edit function
-
   Future<Either<GeneralError, void>> delete(model.Task item);
-  Future<Either<GeneralError, List<model.Task>>> fetchAll();
-  Stream<List<model.Task>> queryAllListener();
+  Either<GeneralError, Stream<List<model.Task>>> queryAllListener();
 }
 
 @LazySingleton(as: TasksRepository)
@@ -31,12 +29,18 @@ class TasksRepositoryImpl extends TasksRepository {
   }
 
   @override
-  Stream<List<model.Task>> queryAllListener() => _service
-      .queryAllListener()
-      .map((data) => data.map(model.Task.fromDto).toList());
-
-  @override
-  Future<Either<GeneralError, List<model.Task>>> fetchAll() async {
-    return _service.fetchAll();
+  Either<GeneralError, Stream<List<model.Task>>> queryAllListener() {
+    return _service.queryAllListener().fold(
+      (error) {
+        return Left(error);
+      },
+      (stream) {
+        return Right(
+          stream.map(
+            (data) => data.map(model.Task.fromDto).toList(),
+          ),
+        );
+      },
+    );
   }
 }

@@ -106,11 +106,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
     );
 
     return _collectionRef<T>().query().onSnapshots(_db).map(
-          (event) => event
-              .map(
-                (e) => e.value,
-              )
-              .toList(),
+          (event) => event.map((e) => e.value).toList(),
         );
   }
 

@@ -3,10 +3,10 @@ import 'package:task_manager_app/presentation/common/app.dart';
 
 import 'injection/injection.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  setupDependencies();
+  await setupDependencies();
 
   runApp(const App());
 }

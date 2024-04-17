@@ -14,7 +14,7 @@ final locator = GetIt.instance;
 )
 Future<void> setupDependencies() async {
   locator.registerSingleton(AppNavigator());
-  locator
+  await locator
       .registerSingleton<LocalDatabaseSource>(LocalDatabaseSourceImpl())
       .setup();
 

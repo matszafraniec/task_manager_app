@@ -13,7 +13,7 @@ abstract class TasksService {
   Future<Either<GeneralError, void>> add(domain.Task item);
   Future<Either<GeneralError, void>> delete(String id);
   Future<Either<GeneralError, List<domain.Task>>> fetchAll();
-  Stream<List<TaskDto>> queryAllListener();
+  Either<GeneralError, Stream<List<TaskDto>>> queryAllListener();
 }
 
 @LazySingleton(as: TasksService)
@@ -42,9 +42,20 @@ class TasksServiceImpl extends TasksService {
   }
 
   @override
-  Stream<List<TaskDto>> queryAllListener() => _db
-      .queryAllListener<TaskDto>()
-      .map((data) => data.map(TaskDto.fromJson).toList());
+  Either<GeneralError, Stream<List<TaskDto>>> queryAllListener() {
+    try {
+      return Right(
+        _db.queryAllListener<TaskDto>().map(
+              (data) => data.map(TaskDto.fromJson).toList(),
+            ),
+      );
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerTasksServiceName, stackTrace: stackTrace);
+
+      return Left(GeneralError.unexpected());
+    }
+  }
 
   @override
   Future<Either<GeneralError, List<domain.Task>>> fetchAll() async {

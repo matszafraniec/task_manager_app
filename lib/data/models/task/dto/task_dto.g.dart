@@ -11,7 +11,9 @@ TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
       title: json['title'] as String,
       description: json['description'] as String,
       priority: $enumDecode(_$PriorityDtoEnumMap, json['priority']),
+      createdAt: TaskDto._timestampConverter(json['createdAt']),
       deadlineAt: TaskDto._timestampConverter(json['deadlineAt']),
+      status: $enumDecode(_$TaskStatusDtoEnumMap, json['status']),
     );
 
 Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
@@ -19,11 +21,19 @@ Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'priority': _$PriorityDtoEnumMap[instance.priority]!,
+      'createdAt': TaskDto._timestampConverter(instance.createdAt),
       'deadlineAt': TaskDto._timestampConverter(instance.deadlineAt),
+      'status': _$TaskStatusDtoEnumMap[instance.status]!,
     };
 
 const _$PriorityDtoEnumMap = {
   PriorityDto.low: 'low',
   PriorityDto.medium: 'medium',
   PriorityDto.high: 'high',
+};
+
+const _$TaskStatusDtoEnumMap = {
+  TaskStatusDto.planned: 'planned',
+  TaskStatusDto.inProgress: 'inProgress',
+  TaskStatusDto.done: 'done',
 };
