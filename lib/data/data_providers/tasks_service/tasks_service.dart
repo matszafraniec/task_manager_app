@@ -37,7 +37,7 @@ class TasksServiceImpl extends TasksService {
   }
 
   @override
-  Future<Either<GeneralError, void>> delete(String id) {
+  Future<Either<GeneralError, void>> delete(String id) async {
     return _db.delete<TaskDto>(id);
   }
 

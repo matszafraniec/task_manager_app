@@ -5,8 +5,8 @@ import 'package:task_manager_app/presentation/screens/home/widgets/task_list_bui
 
 import '../../../../../logic/cubits/tasks/tasks_cubit.dart';
 
-class TaskListBuilder extends StatelessWidget {
-  const TaskListBuilder({super.key});
+class TasksListBuilder extends StatelessWidget {
+  const TasksListBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

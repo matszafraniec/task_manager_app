@@ -35,6 +35,12 @@ class TasksCubit extends Cubit<TasksState> {
     );
   }
 
+  void onTaskSelected() {}
+
+  Future<void> onTaskRemove(Task item) async {
+    await _tasksRepo.delete(item);
+  }
+
   @override
   Future<void> close() async {
     await _querySubscription.cancel();

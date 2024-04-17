@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:task_manager_app/data/common/extensions.dart';
 import 'package:task_manager_app/data/models/enums/task_status/domain/task_status.dart';
@@ -57,5 +58,31 @@ class Task {
     }
 
     return DateFormat('dd.MM, HH:mm').format(deadlineAt);
+  }
+
+  String get statusFormatted {
+    switch (status) {
+      case TaskStatus.planned:
+        return 'Planned';
+      case TaskStatus.inProgress:
+        return 'In progress';
+      case TaskStatus.done:
+        return 'Done';
+      default:
+        return 'Planned';
+    }
+  }
+
+  Color get statusColor {
+    switch (status) {
+      case TaskStatus.planned:
+        return Colors.blue;
+      case TaskStatus.inProgress:
+        return Colors.orange;
+      case TaskStatus.done:
+        return Colors.green;
+      default:
+        return Colors.blue;
+    }
   }
 }

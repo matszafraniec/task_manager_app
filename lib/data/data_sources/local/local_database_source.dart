@@ -14,7 +14,7 @@ abstract class LocalDatabaseSource {
   Future<void> setup();
 
   Future<Either<GeneralError, void>> add<T>(Map<String, dynamic> rawData);
-  Future<Either<GeneralError, void>> delete<T>(String key);
+  Future<Either<GeneralError, void>> delete<T>(String id);
   Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>();
   Stream<List<Map<String, Object?>>> queryAllListener<T>();
 }
@@ -56,7 +56,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
   }
 
   @override
-  Future<Either<GeneralError, void>> delete<T>(String key) async {
+  Future<Either<GeneralError, void>> delete<T>(String id) async {
     try {
       log(
         'Removing item ($T) from local database',
@@ -66,7 +66,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
       await _collectionRef<T>().delete(
         _db,
         finder: Finder(
-          filter: Filter.equals('key', key),
+          filter: Filter.equals('id', id),
         ),
       );
 

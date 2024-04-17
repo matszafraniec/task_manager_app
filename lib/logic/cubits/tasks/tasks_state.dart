@@ -19,6 +19,9 @@ final class TasksPopulatedSuccess extends TasksState {
   final List<Task> tasks;
 
   const TasksPopulatedSuccess(this.tasks);
+
+  @override
+  List<Object> get props => [tasks];
 }
 
 final class TasksPopulatedFailure extends TasksState {

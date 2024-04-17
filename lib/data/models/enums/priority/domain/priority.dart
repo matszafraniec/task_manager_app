@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:task_manager_app/data/models/enums/priority/dto/priority_dto.dart';
 
 enum Priority {
@@ -30,6 +31,28 @@ extension PriorityExtension on Priority {
         return PriorityDto.high;
       default:
         return PriorityDto.medium;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case Priority.low:
+        return Colors.green;
+      case Priority.medium:
+        return Colors.blue;
+      case Priority.high:
+        return Colors.red;
+    }
+  }
+
+  String get label {
+    switch (this) {
+      case Priority.low:
+        return 'Low';
+      case Priority.medium:
+        return 'Medium';
+      case Priority.high:
+        return 'High';
     }
   }
 }
