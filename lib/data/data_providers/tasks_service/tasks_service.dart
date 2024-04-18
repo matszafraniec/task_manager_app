@@ -11,6 +11,7 @@ import '../../models/task/domain/task.dart' as domain;
 
 abstract class TasksService {
   Future<Either<GeneralError, void>> add(domain.Task item);
+  Future<Either<GeneralError, void>> update(domain.Task item);
   Future<Either<GeneralError, void>> delete(String id);
   Future<Either<GeneralError, TaskDto>> findById(String id);
   Either<GeneralError, Stream<List<TaskDto>>> queryAllListener();
@@ -28,6 +29,20 @@ class TasksServiceImpl extends TasksService {
       final dbModel = item.toDto();
 
       return _db.add<TaskDto>(dbModel.toJson());
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerTasksServiceName, stackTrace: stackTrace);
+
+      return left(GeneralError.unexpected());
+    }
+  }
+
+  @override
+  Future<Either<GeneralError, void>> update(domain.Task item) async {
+    try {
+      final dbModel = item.toDto();
+
+      return _db.update<TaskDto>(dbModel.toJson(), item.id);
     } catch (ex, stackTrace) {
       log(ex.toString(),
           name: Statics.loggerTasksServiceName, stackTrace: stackTrace);

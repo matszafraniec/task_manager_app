@@ -21,10 +21,6 @@ final class TaskDetailsError extends TaskDetailsState {
   const TaskDetailsError(this.error);
 }
 
-final class TaskDetailsDeleted extends TaskDetailsState {
-  const TaskDetailsDeleted();
-}
-
 final class TaskDetailsLoaded extends TaskDetailsState {
   final Task data;
 

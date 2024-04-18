@@ -27,4 +27,13 @@ class AppTheme {
   static const defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(16)),
   );
+
+  static InputDecoration defaultInputDecoration(String hintText) =>
+      InputDecoration(
+        border: defaultInputBorder,
+        enabledBorder: AppTheme.defaultInputBorder.copyWith(
+          borderSide: const BorderSide(color: Colors.grey),
+        ),
+        label: Text(hintText),
+      );
 }

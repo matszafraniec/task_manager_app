@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_manager_app/data/models/enums/task_status/domain/task_status.dart';
 import 'package:task_manager_app/logic/cubits/tasks/tasks_cubit.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
 import 'package:task_manager_app/presentation/common/routing/routes.dart';
@@ -75,11 +76,11 @@ class TaskItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  item.statusFormatted,
+                  item.status.label,
                   style: context.themeTexts.labelMedium!.copyWith(
                     color: context.themeColors.secondary,
                     decoration: TextDecoration.underline,
-                    decorationColor: item.statusColor,
+                    decorationColor: item.status.color,
                     decorationThickness: 2,
                     letterSpacing: 1.5,
                   ),

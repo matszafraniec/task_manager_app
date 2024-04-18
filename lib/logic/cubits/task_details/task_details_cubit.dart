@@ -34,6 +34,16 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     );
   }
 
+  Future<void> onTaskSave(Task item) async {
+    emit(const TaskDetailsLoading());
+
+    final response = await _tasksRepo.update(item);
+
+    if (response.isRight()) {
+      locator.get<AppNavigator>().router.pop();
+    }
+  }
+
   Future<void> onTaskRemove() async {
     final response = await _tasksRepo.delete(taskId);
 

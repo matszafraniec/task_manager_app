@@ -14,6 +14,8 @@ abstract class LocalDatabaseSource {
   Future<void> setup();
 
   Future<Either<GeneralError, void>> add<T>(Map<String, dynamic> rawData);
+  Future<Either<GeneralError, void>> update<T>(
+      Map<String, dynamic> rawData, String id);
   Future<Either<GeneralError, void>> delete<T>(String id);
   Future<Either<GeneralError, Map<String, dynamic>?>> findById<T>(String id);
   Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>();
@@ -57,6 +59,32 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
   }
 
   @override
+  Future<Either<GeneralError, void>> update<T>(
+    Map<String, dynamic> rawData,
+    String id,
+  ) async {
+    try {
+      log(
+        'Updating item ($T) in local database',
+        name: Statics.loggerLocalDbName,
+      );
+
+      await _collectionRef<T>().update(
+        _db,
+        finder: Finder(filter: Filter.equals('id', id)),
+        rawData,
+      );
+
+      return right(null);
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
+
+      return left(GeneralError.unexpected());
+    }
+  }
+
+  @override
   Future<Either<GeneralError, void>> delete<T>(String id) async {
     try {
       log(
@@ -66,9 +94,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
 
       await _collectionRef<T>().delete(
         _db,
-        finder: Finder(
-          filter: Filter.equals('id', id),
-        ),
+        finder: Finder(filter: Filter.equals('id', id)),
       );
 
       return right(null);
@@ -122,9 +148,7 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
 
       final rawData = await _collectionRef<T>().findFirst(
         _db,
-        finder: Finder(
-          filter: Filter.equals('id', id),
-        ),
+        finder: Finder(filter: Filter.equals('id', id)),
       );
 
       if (rawData == null) {

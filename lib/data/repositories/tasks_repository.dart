@@ -7,7 +7,7 @@ import '../models/task/domain/task.dart' as model;
 
 abstract class TasksRepository {
   Future<Either<GeneralError, void>> add(model.Task item);
-  //TODO: add edit function
+  Future<Either<GeneralError, void>> update(model.Task item);
   Future<Either<GeneralError, void>> delete(String id);
   Future<Either<GeneralError, model.Task>> findById(String id);
   Either<GeneralError, Stream<List<model.Task>>> queryAllListener();
@@ -22,6 +22,11 @@ class TasksRepositoryImpl extends TasksRepository {
   @override
   Future<Either<GeneralError, void>> add(model.Task item) {
     return _service.add(item);
+  }
+
+  @override
+  Future<Either<GeneralError, void>> update(model.Task item) {
+    return _service.update(item);
   }
 
   @override

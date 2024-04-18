@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager_app/logic/cubits/task_details/task_details_cubit.dart';
-import 'package:task_manager_app/presentation/common/context_extensions.dart';
+import 'package:task_manager_app/presentation/screens/task_details/widgets/task_details_loaded_layout.dart';
 
 import '../../../injection/injection.dart';
 import '../../common/dimensions.dart';
@@ -23,15 +23,15 @@ class TaskDetailsScreen extends StatelessWidget {
           ],
         ),
         body: BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
-          builder: (context, state) => Column(
-            children: [
-              if (state is TaskDetailsLoaded)
-                Text(
-                  state.data.title,
-                  style: context.themeTexts.titleMedium,
-                ),
-            ],
-          ),
+          builder: (context, state) {
+            if (state is TaskDetailsLoading) {
+              return const CircularProgressIndicator();
+            } else if (state is TaskDetailsLoaded) {
+              return TaskDetailsLoadedLayout(state.data);
+            }
+
+            return const SizedBox();
+          },
         ),
       ),
     );
