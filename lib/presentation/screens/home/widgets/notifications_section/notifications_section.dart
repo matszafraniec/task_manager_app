@@ -15,12 +15,10 @@ class NotificationsSection extends StatelessWidget {
         if (state is NotificationsChecked) {
           if (state.deadlineTasksCount > 0) {
             return NotificationBanner(count: state.deadlineTasksCount);
-          } else {
-            return const SizedBox();
           }
-        } else {
-          return const SizedBox();
         }
+
+        return const SizedBox();
       },
     );
   }
@@ -37,8 +35,11 @@ class NotificationBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: Dimensions.paddingM, vertical: Dimensions.paddingL),
+      padding: const EdgeInsetsDirectional.only(
+        start: Dimensions.paddingM,
+        end: Dimensions.paddingM,
+        top: Dimensions.paddingL,
+      ),
       child: DecoratedBox(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16)),

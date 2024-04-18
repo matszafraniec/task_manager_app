@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:task_manager_app/logic/cubits/notifications/notifications_cubit.dart';
 import 'package:task_manager_app/logic/cubits/statistics/statistics_cubit.dart';
+import 'package:task_manager_app/logic/cubits/weather/weather_cubit.dart';
 import 'package:task_manager_app/presentation/screens/statistics/statistics_screen.dart';
 import 'package:task_manager_app/presentation/screens/task_details/task_details_screen.dart';
 
@@ -29,8 +30,15 @@ class AppNavigator {
             routes: [
               GoRoute(
                 path: Routes.home,
-                builder: (context, state) => BlocProvider<NotificationsCubit>(
-                  create: (context) => locator.get<NotificationsCubit>(),
+                builder: (context, state) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<NotificationsCubit>(
+                      create: (context) => locator.get<NotificationsCubit>(),
+                    ),
+                    BlocProvider<WeatherCubit>(
+                      create: (context) => locator.get<WeatherCubit>(),
+                    ),
+                  ],
                   child: const HomeScreen(),
                 ),
               ),
