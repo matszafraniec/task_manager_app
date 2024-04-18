@@ -93,9 +93,9 @@ class NotificationBanner extends StatelessWidget {
 
   String get text {
     if (count == 1) {
-      return 'You have $count task today';
+      return 'You have $count pending task today';
     } else {
-      return 'You have $count tasks today';
+      return 'You have $count pending tasks today';
     }
   }
 }
