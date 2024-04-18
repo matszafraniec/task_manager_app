@@ -139,7 +139,7 @@ class FilterSelectorButton extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.only(
                         start: Dimensions.paddingXS),
                     child: CircleAvatar(
-                      radius: 10,
+                      radius: 8.5,
                       backgroundColor: Colors.white,
                       child: Text(
                         count.toString(),

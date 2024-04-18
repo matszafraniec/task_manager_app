@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../../../common/environment.dart';
 import '../../../models/general_error/domain/general_error.dart';
 import '../../../models/weather_current_conditions/remote/weather_current_conditions_remote.dart';
 
@@ -45,8 +46,7 @@ class WeatherRemoteServiceImpl extends WeatherRemoteService {
       final response = await _dio.get(
         '$_baseUrl/locations/v1/cities/geoposition/search',
         queryParameters: {
-          //TODO: pass key later
-          'apikey': '76uBXEHFHnFUzhhHJPCneAE4KuXpXLA0',
+          'apikey': EnvironmentConfig.weatherApiKey,
           'q': '$lat,$lon',
           'details': false,
         },
@@ -74,8 +74,7 @@ class WeatherRemoteServiceImpl extends WeatherRemoteService {
       final response = await _dio.get(
         '$_baseUrl/currentconditions/v1/$locationKey',
         queryParameters: {
-          //TODO: add key later
-          'apikey': '76uBXEHFHnFUzhhHJPCneAE4KuXpXLA0',
+          'apikey': EnvironmentConfig.weatherApiKey,
           'details': true,
         },
       );

@@ -1,16 +1,23 @@
-# task_manager_app
+# Personal Task Manager application
 
-A new Flutter project.
+Sample personal task manager application written in Flutter.
+
+<img src="/demo.gif" width="240" height="480"/>
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+App uses [AccuWeather API][1] to fetch weather conditions data.
 
-A few resources to get you started if this is your first Flutter project:
+Please provide your API key to take advantage of the full functionality.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+API key must be provided as dart define like presented below:
+`flutter run --dart-define=WEATHER_API_KEY={YOUR_API_KEY}`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can easily generate free API key from [AccuWeather developer website][2]. It has a limit of 50 hits per day.
+
+## Environment
+
+Project developed and ran on Flutter ver 3.13.6 (Dart 3.1.3)
+
+[1]: https://developer.accuweather.com/apis
+[2]: https://developer.accuweather.com/
