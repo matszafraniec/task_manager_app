@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_manager_app/logic/cubits/tasks/tasks_cubit.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
+import 'package:task_manager_app/presentation/common/routing/routes.dart';
 import 'package:task_manager_app/presentation/common/ui/card_wrapper.dart';
 
 import '../../../../../data/models/enums/priority/domain/priority.dart';
@@ -48,42 +50,50 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CardWrapper(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Header(item),
-              ActionButtons(item),
-            ],
-          ),
-          const Divider(),
-          PriorityInfo(item.priority),
-          const SizedBox(height: Dimensions.paddingL),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                item.statusFormatted,
-                style: context.themeTexts.labelMedium!.copyWith(
-                  color: context.themeColors.secondary,
-                  decoration: TextDecoration.underline,
-                  decorationColor: item.statusColor,
-                  decorationThickness: 2,
-                  letterSpacing: 1.5,
+    return InkWell(
+      onTap: () {
+        context.push(
+          Routes.taskDetails,
+          extra: item.id,
+        );
+      },
+      child: CardWrapper(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Header(item),
+                ActionButtons(item),
+              ],
+            ),
+            const Divider(),
+            PriorityInfo(item.priority),
+            const SizedBox(height: Dimensions.paddingL),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  item.statusFormatted,
+                  style: context.themeTexts.labelMedium!.copyWith(
+                    color: context.themeColors.secondary,
+                    decoration: TextDecoration.underline,
+                    decorationColor: item.statusColor,
+                    decorationThickness: 2,
+                    letterSpacing: 1.5,
+                  ),
                 ),
-              ),
-              Text(
-                item.deadlineAtFormatted,
-                style: context.themeTexts.labelMedium!.copyWith(
-                  color: context.themeColors.secondary,
-                ),
-              )
-            ],
-          )
-        ],
+                Text(
+                  item.deadlineAtFormatted,
+                  style: context.themeTexts.labelMedium!.copyWith(
+                    color: context.themeColors.secondary,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -154,7 +164,10 @@ class ActionButtons extends StatelessWidget {
     return PopupMenuButton(
       onSelected: (value) async {
         if (value == 'edit') {
-          // TODO: navigate to details
+          context.push(
+            Routes.taskDetails,
+            extra: item.id,
+          );
         } else if (value == 'remove') {
           await context.read<TasksCubit>().onTaskRemove(item);
         }

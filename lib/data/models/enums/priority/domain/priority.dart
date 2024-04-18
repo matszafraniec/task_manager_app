@@ -48,11 +48,11 @@ extension PriorityExtension on Priority {
   String get label {
     switch (this) {
       case Priority.low:
-        return 'Low';
+        return 'Low priority';
       case Priority.medium:
-        return 'Medium';
+        return 'Medium priority';
       case Priority.high:
-        return 'High';
+        return 'High priority';
     }
   }
 }

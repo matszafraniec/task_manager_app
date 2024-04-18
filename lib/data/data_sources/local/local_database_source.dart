@@ -15,6 +15,7 @@ abstract class LocalDatabaseSource {
 
   Future<Either<GeneralError, void>> add<T>(Map<String, dynamic> rawData);
   Future<Either<GeneralError, void>> delete<T>(String id);
+  Future<Either<GeneralError, Map<String, dynamic>?>> findById<T>(String id);
   Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>();
   Stream<List<Map<String, Object?>>> queryAllListener<T>();
 }
@@ -108,6 +109,35 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
     return _collectionRef<T>().query().onSnapshots(_db).map(
           (event) => event.map((e) => e.value).toList(),
         );
+  }
+
+  @override
+  Future<Either<GeneralError, Map<String, dynamic>?>> findById<T>(
+      String id) async {
+    try {
+      log(
+        'Find item ($T) in local database',
+        name: Statics.loggerLocalDbName,
+      );
+
+      final rawData = await _collectionRef<T>().findFirst(
+        _db,
+        finder: Finder(
+          filter: Filter.equals('id', id),
+        ),
+      );
+
+      if (rawData == null) {
+        return left(GeneralError.dataNotFound());
+      } else {
+        return right(rawData.value);
+      }
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
+
+      return left(GeneralError.unexpected());
+    }
   }
 
   StoreRef<int, Map<String, Object?>> _collectionRef<T>() {

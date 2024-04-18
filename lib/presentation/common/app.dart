@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../injection/injection.dart';
+import '../../logic/cubits/tasks/tasks_cubit.dart';
 import 'app_theme.dart';
 import 'routing/app_navigator.dart';
 
@@ -11,12 +13,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _hideKeyboard(context),
-      child: MaterialApp.router(
-        title: 'Personal Task Manager',
-        theme: lightTheme(),
-        darkTheme: darkTheme(),
-        routerConfig: locator.get<AppNavigator>().router,
-        debugShowCheckedModeBanner: false,
+      child: BlocProvider<TasksCubit>(
+        create: (context) => locator.get<TasksCubit>(),
+        child: MaterialApp.router(
+          title: 'Personal Task Manager',
+          theme: lightTheme(),
+          darkTheme: darkTheme(),
+          routerConfig: locator.get<AppNavigator>().router,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

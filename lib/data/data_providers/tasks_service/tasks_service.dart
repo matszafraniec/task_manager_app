@@ -12,7 +12,7 @@ import '../../models/task/domain/task.dart' as domain;
 abstract class TasksService {
   Future<Either<GeneralError, void>> add(domain.Task item);
   Future<Either<GeneralError, void>> delete(String id);
-  Future<Either<GeneralError, List<domain.Task>>> fetchAll();
+  Future<Either<GeneralError, TaskDto>> findById(String id);
   Either<GeneralError, Stream<List<TaskDto>>> queryAllListener();
 }
 
@@ -32,7 +32,7 @@ class TasksServiceImpl extends TasksService {
       log(ex.toString(),
           name: Statics.loggerTasksServiceName, stackTrace: stackTrace);
 
-      return Left(GeneralError.unexpected());
+      return left(GeneralError.unexpected());
     }
   }
 
@@ -44,7 +44,7 @@ class TasksServiceImpl extends TasksService {
   @override
   Either<GeneralError, Stream<List<TaskDto>>> queryAllListener() {
     try {
-      return Right(
+      return right(
         _db.queryAllListener<TaskDto>().map(
               (data) => data.map(TaskDto.fromJson).toList(),
             ),
@@ -53,21 +53,17 @@ class TasksServiceImpl extends TasksService {
       log(ex.toString(),
           name: Statics.loggerTasksServiceName, stackTrace: stackTrace);
 
-      return Left(GeneralError.unexpected());
+      return left(GeneralError.unexpected());
     }
   }
 
   @override
-  Future<Either<GeneralError, List<domain.Task>>> fetchAll() async {
-    final response = await _db.fetchAll<TaskDto>();
+  Future<Either<GeneralError, TaskDto>> findById(String id) async {
+    final response = await _db.findById<TaskDto>(id);
 
     return response.fold(
-      (error) => Left(error),
-      (data) {
-        final tasksDto = data.map((e) => TaskDto.fromJson(e));
-
-        return Right(tasksDto.map((e) => domain.Task.fromDto(e)).toList());
-      },
+      (error) => left(error),
+      (data) => right(TaskDto.fromJson(data!)),
     );
   }
 }
