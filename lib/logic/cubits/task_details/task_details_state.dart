@@ -29,3 +29,11 @@ final class TaskDetailsLoaded extends TaskDetailsState {
   @override
   List<Object> get props => [data];
 }
+
+final class TaskDetailsOnSelected extends TaskDetailsLoaded {
+  const TaskDetailsOnSelected(super.data);
+}
+
+final class TaskDetailsOnNew extends TaskDetailsLoaded {
+  const TaskDetailsOnNew(super.data);
+}

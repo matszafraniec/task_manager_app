@@ -12,7 +12,7 @@ part 'task_details_state.dart';
 
 @injectable
 class TaskDetailsCubit extends Cubit<TaskDetailsState> {
-  final String taskId;
+  final String? taskId;
   final TasksRepository _tasksRepo;
 
   TaskDetailsCubit({
@@ -23,32 +23,54 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     _loadData();
   }
 
-  void _loadData() async {
-    emit(const TaskDetailsLoading());
-
-    final response = await _tasksRepo.findById(taskId);
-
-    response.fold(
-      (error) => emit(TaskDetailsError(error)),
-      (data) => emit(TaskDetailsLoaded(data)),
-    );
-  }
-
   Future<void> onTaskSave(Task item) async {
-    emit(const TaskDetailsLoading());
+    if (state is TaskDetailsOnNew) {
+      emit(const TaskDetailsLoading());
 
-    final response = await _tasksRepo.update(item);
+      final response = await _tasksRepo.add(item);
 
-    if (response.isRight()) {
-      locator.get<AppNavigator>().router.pop();
+      if (response.isRight()) {
+        locator.get<AppNavigator>().router.pop();
+      }
+    } else if (state is TaskDetailsOnSelected) {
+      emit(const TaskDetailsLoading());
+
+      final response = await _tasksRepo.update(item);
+
+      if (response.isRight()) {
+        locator.get<AppNavigator>().router.pop();
+      }
     }
   }
 
   Future<void> onTaskRemove() async {
-    final response = await _tasksRepo.delete(taskId);
+    final response = await _tasksRepo.delete(taskId!);
 
     if (response.isRight()) {
       locator.get<AppNavigator>().router.pop();
     }
+  }
+
+  void _loadData() async {
+    if (taskId == null) {
+      _setupTaskCandidate();
+    } else {
+      await _fetchTaskData();
+    }
+  }
+
+  void _setupTaskCandidate() {
+    emit(TaskDetailsOnNew(Task.candidate()));
+  }
+
+  Future<void> _fetchTaskData() async {
+    emit(const TaskDetailsLoading());
+
+    final response = await _tasksRepo.findById(taskId!);
+
+    response.fold(
+      (error) => emit(TaskDetailsError(error)),
+      (data) => emit(TaskDetailsOnSelected(data)),
+    );
   }
 }

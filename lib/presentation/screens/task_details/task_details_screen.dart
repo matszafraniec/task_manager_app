@@ -7,9 +7,9 @@ import '../../../injection/injection.dart';
 import '../../common/dimensions.dart';
 
 class TaskDetailsScreen extends StatelessWidget {
-  final String taskId;
+  final String? taskId;
 
-  const TaskDetailsScreen({required this.taskId, super.key});
+  const TaskDetailsScreen({this.taskId, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,44 +43,51 @@ class ActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      onSelected: (value) async {
-        if (value == 'remove') {
-          await context.read<TaskDetailsCubit>().onTaskRemove();
-        }
-      },
-      icon: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(Dimensions.paddingXS),
-          child: Icon(
-            Icons.more_vert,
-            size: 16,
-          ),
-        ),
-      ),
-      itemBuilder: (_) {
-        return [
-          const PopupMenuItem<String>(
-            value: 'remove',
-            child: Row(
-              children: [
-                Icon(
-                  Icons.delete,
-                  size: 21,
+    return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
+      builder: (context, state) {
+        return Visibility(
+          visible: state is TaskDetailsOnSelected,
+          child: PopupMenuButton(
+            onSelected: (value) async {
+              if (value == 'remove') {
+                await context.read<TaskDetailsCubit>().onTaskRemove();
+              }
+            },
+            icon: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(Dimensions.paddingXS),
+                child: Icon(
+                  Icons.more_vert,
+                  size: 16,
                 ),
-                Padding(
-                  padding:
-                      EdgeInsetsDirectional.only(start: Dimensions.paddingXS),
-                  child: Text('Remove'),
-                )
-              ],
+              ),
             ),
-          )
-        ];
+            itemBuilder: (_) {
+              return [
+                const PopupMenuItem<String>(
+                  value: 'remove',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: 21,
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(
+                            start: Dimensions.paddingXS),
+                        child: Text('Remove'),
+                      )
+                    ],
+                  ),
+                )
+              ];
+            },
+          ),
+        );
       },
     );
   }

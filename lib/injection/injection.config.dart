@@ -34,7 +34,7 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i4.TasksServiceImpl(gh<_i5.LocalDatabaseSource>()));
     gh.lazySingleton<_i6.TasksRepository>(
         () => _i6.TasksRepositoryImpl(gh<_i4.TasksService>()));
-    gh.factoryParam<_i7.TaskDetailsCubit, String, dynamic>((
+    gh.factoryParam<_i7.TaskDetailsCubit, String?, dynamic>((
       taskId,
       _,
     ) =>

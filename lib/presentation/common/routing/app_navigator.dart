@@ -48,7 +48,7 @@ class AppNavigator {
       GoRoute(
         path: Routes.taskDetails,
         builder: (context, state) => TaskDetailsScreen(
-          taskId: state.extra as String,
+          taskId: state.extra as String?,
         ),
       )
     ],

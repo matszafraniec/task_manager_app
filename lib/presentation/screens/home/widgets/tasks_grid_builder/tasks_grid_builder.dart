@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
-import 'package:task_manager_app/presentation/screens/home/widgets/task_list_builder/tasks_list.dart';
+import 'package:task_manager_app/presentation/screens/home/widgets/tasks_grid_builder/tasks_grid.dart';
 
 import '../../../../../logic/cubits/tasks/tasks_cubit.dart';
 
-class TasksListBuilder extends StatelessWidget {
-  const TasksListBuilder({super.key});
+class TasksGridBuilder extends StatelessWidget {
+  const TasksGridBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,11 @@ class TasksListBuilder extends StatelessWidget {
         if (state is TasksInitial || state is TasksLoading) {
           return const CircularProgressIndicator();
         } else if (state is TasksPopulatedSuccess) {
-          return const TasksList();
+          if (state.tasks.isEmpty) {
+            return const SizedBox();
+          } else {
+            return const TasksGrid();
+          }
         } else if (state is TasksFiltered) {
           return const SizedBox();
         }

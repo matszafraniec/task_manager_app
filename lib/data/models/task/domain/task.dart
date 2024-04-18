@@ -3,6 +3,7 @@ import 'package:task_manager_app/data/common/extensions.dart';
 import 'package:task_manager_app/data/models/enums/task_status/domain/task_status.dart';
 import 'package:task_manager_app/data/models/task/dto/task_dto.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../enums/priority/domain/priority.dart';
 
@@ -24,6 +25,16 @@ class Task {
     required this.createdAt,
     required this.status,
   });
+
+  factory Task.candidate() => Task(
+        id: const Uuid().v4(),
+        title: '',
+        description: '',
+        priority: Priority.medium,
+        deadlineAt: DateTime.now().add(const Duration(days: 1)),
+        createdAt: DateTime.now(),
+        status: TaskStatus.planned,
+      );
 
   factory Task.fromDto(TaskDto dto) => Task(
         id: dto.id,

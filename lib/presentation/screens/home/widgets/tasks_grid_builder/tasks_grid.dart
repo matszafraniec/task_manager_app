@@ -11,8 +11,8 @@ import '../../../../../data/models/enums/priority/domain/priority.dart';
 import '../../../../../data/models/task/domain/task.dart';
 import '../../../../common/dimensions.dart';
 
-class TasksList extends StatelessWidget {
-  const TasksList({super.key});
+class TasksGrid extends StatelessWidget {
+  const TasksGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,19 @@ class TasksList extends StatelessWidget {
       child: BlocBuilder<TasksCubit, TasksState>(
         builder: (context, state) {
           if (state is TasksPopulatedSuccess) {
-            return ListView.separated(
-              shrinkWrap: true,
+            return GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsetsDirectional.only(
+                  bottom: Dimensions.paddingXL),
               itemCount: state.tasks.length,
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: Dimensions.paddingM),
-              itemBuilder: (context, index) {
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.2,
+                crossAxisSpacing: Dimensions.paddingM,
+                mainAxisSpacing: Dimensions.paddingL,
+              ),
+              itemBuilder: (_, index) {
                 final item = state.tasks[index];
 
                 return TaskItem(item);
@@ -69,20 +75,24 @@ class TaskItem extends StatelessWidget {
                 ActionButtons(item),
               ],
             ),
-            const Divider(),
+            const Divider(thickness: 0.5),
             PriorityInfo(item.priority),
-            const SizedBox(height: Dimensions.paddingL),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  item.status.label,
-                  style: context.themeTexts.labelMedium!.copyWith(
-                    color: context.themeColors.secondary,
-                    decoration: TextDecoration.underline,
-                    decorationColor: item.status.color,
-                    decorationThickness: 2,
-                    letterSpacing: 1.5,
+                Expanded(
+                  child: Text(
+                    item.status.label,
+                    style: context.themeTexts.labelMedium!.copyWith(
+                      color: context.themeColors.secondary,
+                      decoration: TextDecoration.underline,
+                      decorationColor: item.status.color,
+                      decorationThickness: 2,
+                      letterSpacing: 1.5,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Text(
@@ -107,22 +117,24 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          item.title,
-          style: context.themeTexts.headlineSmall,
-        ),
-        Text(
-          item.description,
-          style: context.themeTexts.labelMedium!.copyWith(
-            color: context.themeColors.secondary,
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.title,
+            style: context.themeTexts.labelLarge,
           ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+          Text(
+            item.description,
+            style: context.themeTexts.labelMedium!.copyWith(
+              color: context.themeColors.secondary,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -182,7 +194,7 @@ class ActionButtons extends StatelessWidget {
           padding: EdgeInsets.all(Dimensions.paddingXS),
           child: Icon(
             Icons.more_vert,
-            size: 16,
+            size: 12,
           ),
         ),
       ),
