@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../data/models/enums/tasks_filter/domain/tasks_filter.dart';
 import '../../../data/repositories/tasks_repository.dart';
 
 part 'notifications_state.dart';
@@ -22,7 +21,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   void _checkDeadlineTasks() {
-    _tasksRepo.queryListener(TasksFilter.today).fold(
+    _tasksRepo.queryListenerDeadlineTasks().fold(
       (_) => null,
       (stream) {
         _querySubscription = stream.listen(

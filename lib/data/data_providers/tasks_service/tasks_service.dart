@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sembast/sembast.dart';
 import 'package:task_manager_app/data/models/enums/tasks_filter/dto/tasks_filter_dto.dart';
 import 'package:task_manager_app/data/models/task/dto/task_dto.dart';
 
@@ -17,6 +18,9 @@ abstract class TasksService {
   Future<Either<GeneralError, TaskDto>> findById(String id);
   Either<GeneralError, Stream<List<TaskDto>>> queryListener(
     TasksFilterDto filter,
+  );
+  Either<GeneralError, Stream<List<TaskDto>>> queryListenerWithCustomFilter(
+    Filter filter,
   );
 }
 
@@ -66,6 +70,23 @@ class TasksServiceImpl extends TasksService {
       return right(
         _db
             .queryListener<TaskDto>(filter.toDbFilter())
+            .map((data) => data.map(TaskDto.fromJson).toList()),
+      );
+    } catch (ex, stackTrace) {
+      log(ex.toString(),
+          name: Statics.loggerTasksServiceName, stackTrace: stackTrace);
+
+      return left(GeneralError.unexpected());
+    }
+  }
+
+  @override
+  Either<GeneralError, Stream<List<TaskDto>>> queryListenerWithCustomFilter(
+      Filter filter) {
+    try {
+      return right(
+        _db
+            .queryListener<TaskDto>(Finder(filter: filter))
             .map((data) => data.map(TaskDto.fromJson).toList()),
       );
     } catch (ex, stackTrace) {

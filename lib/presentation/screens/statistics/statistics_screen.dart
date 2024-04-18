@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/presentation/common/ui/no_items_text.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
@@ -11,7 +12,7 @@ class StatisticsScreen extends StatelessWidget {
       ),
       body: const Column(
         children: [
-          Text('this is statistics screen'),
+          NoItemsText('Some day we will present statistics here 🥳'),
         ],
       ),
     );
