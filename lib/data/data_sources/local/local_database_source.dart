@@ -18,8 +18,7 @@ abstract class LocalDatabaseSource {
       Map<String, dynamic> rawData, String id);
   Future<Either<GeneralError, void>> delete<T>(String id);
   Future<Either<GeneralError, Map<String, dynamic>?>> findById<T>(String id);
-  Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>();
-  Stream<List<Map<String, Object?>>> queryAllListener<T>();
+  Stream<List<Map<String, Object?>>> queryListener<T>(Finder finder);
 }
 
 class LocalDatabaseSourceImpl extends LocalDatabaseSource {
@@ -107,32 +106,13 @@ class LocalDatabaseSourceImpl extends LocalDatabaseSource {
   }
 
   @override
-  Future<Either<GeneralError, List<Map<String, dynamic>>>> fetchAll<T>() async {
-    try {
-      log(
-        'Fetching all items ($T) from local database',
-        name: Statics.loggerLocalDbName,
-      );
-
-      final records = await _collectionRef<T>().find(_db);
-
-      return right(records.map((e) => e.value).toList());
-    } catch (ex, stackTrace) {
-      log(ex.toString(),
-          name: Statics.loggerLocalDbName, stackTrace: stackTrace);
-
-      return left(GeneralError.unexpected());
-    }
-  }
-
-  @override
-  Stream<List<Map<String, Object?>>> queryAllListener<T>() {
+  Stream<List<Map<String, Object?>>> queryListener<T>(Finder finder) {
     log(
-      'Query all listener set ($T)',
+      'Query listener set ($T) filter: ${finder.toString()}',
       name: Statics.loggerLocalDbName,
     );
 
-    return _collectionRef<T>().query().onSnapshots(_db).map(
+    return _collectionRef<T>().query(finder: finder).onSnapshots(_db).map(
           (event) => event.map((e) => e.value).toList(),
         );
   }

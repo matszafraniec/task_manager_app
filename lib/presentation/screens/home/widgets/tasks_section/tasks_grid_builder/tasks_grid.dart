@@ -7,9 +7,9 @@ import 'package:task_manager_app/presentation/common/context_extensions.dart';
 import 'package:task_manager_app/presentation/common/routing/routes.dart';
 import 'package:task_manager_app/presentation/common/ui/card_wrapper.dart';
 
-import '../../../../../data/models/enums/priority/domain/priority.dart';
-import '../../../../../data/models/task/domain/task.dart';
-import '../../../../common/dimensions.dart';
+import '../../../../../../data/models/enums/priority/domain/priority.dart';
+import '../../../../../../data/models/task/domain/task.dart';
+import '../../../../../common/dimensions.dart';
 
 class TasksGrid extends StatelessWidget {
   const TasksGrid({super.key});

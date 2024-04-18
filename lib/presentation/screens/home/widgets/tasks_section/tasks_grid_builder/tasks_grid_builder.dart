@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
-import 'package:task_manager_app/presentation/screens/home/widgets/tasks_grid_builder/tasks_grid.dart';
 
-import '../../../../../logic/cubits/tasks/tasks_cubit.dart';
+import '../../../../../../logic/cubits/tasks/tasks_cubit.dart';
+import 'tasks_grid.dart';
 
 class TasksGridBuilder extends StatelessWidget {
   const TasksGridBuilder({super.key});
@@ -21,8 +21,6 @@ class TasksGridBuilder extends StatelessWidget {
           } else {
             return const TasksGrid();
           }
-        } else if (state is TasksFiltered) {
-          return const SizedBox();
         }
 
         return const SizedBox();

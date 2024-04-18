@@ -9,7 +9,7 @@ class StatisticsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Statistics'),
       ),
-      body: Column(
+      body: const Column(
         children: [
           Text('this is statistics screen'),
         ],

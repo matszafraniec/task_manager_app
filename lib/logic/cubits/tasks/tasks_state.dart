@@ -17,19 +17,16 @@ final class TasksLoading extends TasksState {
 
 final class TasksPopulatedSuccess extends TasksState {
   final List<Task> tasks;
+  final TasksFilter filter;
 
-  const TasksPopulatedSuccess(this.tasks);
+  const TasksPopulatedSuccess(this.tasks, this.filter);
 
   @override
-  List<Object> get props => [tasks];
+  List<Object> get props => [tasks, filter];
 }
 
 final class TasksPopulatedFailure extends TasksState {
   final GeneralError error;
 
   const TasksPopulatedFailure(this.error);
-}
-
-final class TasksFiltered extends TasksState {
-  const TasksFiltered();
 }

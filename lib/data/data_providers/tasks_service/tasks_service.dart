@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager_app/data/models/enums/tasks_filter/dto/tasks_filter_dto.dart';
 import 'package:task_manager_app/data/models/task/dto/task_dto.dart';
 
 import '../../common/statics.dart';
@@ -14,7 +15,9 @@ abstract class TasksService {
   Future<Either<GeneralError, void>> update(domain.Task item);
   Future<Either<GeneralError, void>> delete(String id);
   Future<Either<GeneralError, TaskDto>> findById(String id);
-  Either<GeneralError, Stream<List<TaskDto>>> queryAllListener();
+  Either<GeneralError, Stream<List<TaskDto>>> queryListener(
+    TasksFilterDto filter,
+  );
 }
 
 @LazySingleton(as: TasksService)
@@ -57,12 +60,13 @@ class TasksServiceImpl extends TasksService {
   }
 
   @override
-  Either<GeneralError, Stream<List<TaskDto>>> queryAllListener() {
+  Either<GeneralError, Stream<List<TaskDto>>> queryListener(
+      TasksFilterDto filter) {
     try {
       return right(
-        _db.queryAllListener<TaskDto>().map(
-              (data) => data.map(TaskDto.fromJson).toList(),
-            ),
+        _db
+            .queryListener<TaskDto>(filter.toDbFilter())
+            .map((data) => data.map(TaskDto.fromJson).toList()),
       );
     } catch (ex, stackTrace) {
       log(ex.toString(),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager_app/data/models/enums/tasks_filter/domain/tasks_filter.dart';
 import 'package:task_manager_app/data/models/general_error/domain/general_error.dart';
 import 'package:task_manager_app/data/repositories/tasks_repository.dart';
 
@@ -25,11 +26,26 @@ class TasksCubit extends Cubit<TasksState> {
   void _dataListenAndPump() async {
     emit(const TasksLoading());
 
-    _tasksRepo.queryAllListener().fold(
+    _tasksRepo.queryListener(TasksFilter.all).fold(
       (error) => emit(TasksPopulatedFailure(error)),
       (stream) {
         _querySubscription = stream.listen(
-          (tasks) => emit(TasksPopulatedSuccess(tasks)),
+          (tasks) => emit(TasksPopulatedSuccess(tasks, TasksFilter.all)),
+        );
+      },
+    );
+  }
+
+  void onFilterSet(TasksFilter filter) {
+    emit(const TasksLoading());
+
+    _tasksRepo.queryListener(filter).fold(
+      (error) => emit(TasksPopulatedFailure(error)),
+      (stream) async {
+        await _querySubscription.cancel();
+
+        _querySubscription = stream.listen(
+          (tasks) => emit(TasksPopulatedSuccess(tasks, filter)),
         );
       },
     );

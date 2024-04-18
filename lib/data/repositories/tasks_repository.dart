@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager_app/data/models/enums/tasks_filter/domain/tasks_filter.dart';
 
 import '../data_providers/tasks_service/tasks_service.dart';
 import '../models/general_error/domain/general_error.dart';
@@ -10,7 +11,8 @@ abstract class TasksRepository {
   Future<Either<GeneralError, void>> update(model.Task item);
   Future<Either<GeneralError, void>> delete(String id);
   Future<Either<GeneralError, model.Task>> findById(String id);
-  Either<GeneralError, Stream<List<model.Task>>> queryAllListener();
+  Either<GeneralError, Stream<List<model.Task>>> queryListener(
+      TasksFilter filter);
 }
 
 @LazySingleton(as: TasksRepository)
@@ -35,12 +37,18 @@ class TasksRepositoryImpl extends TasksRepository {
   }
 
   @override
-  Either<GeneralError, Stream<List<model.Task>>> queryAllListener() {
-    return _service.queryAllListener().fold(
+  Either<GeneralError, Stream<List<model.Task>>> queryListener(
+      TasksFilter filter) {
+    return _service.queryListener(filter.toDto()).fold(
           (error) => left(error),
           (stream) => right(
             stream.map(
-              (data) => data.map(model.Task.fromDto).toList(),
+              (data) {
+                final tasks = data.map(model.Task.fromDto).toList();
+                tasks.sort((a, b) => b.deadlineAt.compareTo(a.deadlineAt));
+
+                return tasks;
+              },
             ),
           ),
         );
