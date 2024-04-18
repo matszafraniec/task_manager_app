@@ -1,10 +1,12 @@
 import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:task_manager_app/data/models/enums/priority/dto/priority_dto.dart';
+import 'package:task_manager_app/data/models/enums/task_status/domain/task_status.dart';
 
 enum TasksFilterDto {
   all,
   today,
+  inProgress,
   highPriority;
 
   Finder toDbFilter() {
@@ -29,6 +31,13 @@ enum TasksFilterDto {
                 Timestamp.fromDateTime(todayEndAt),
               )
             ],
+          ),
+        );
+      case TasksFilterDto.inProgress:
+        return Finder(
+          filter: Filter.equals(
+            'status',
+            TaskStatus.inProgress,
           ),
         );
       case TasksFilterDto.highPriority:

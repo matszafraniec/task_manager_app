@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
+import 'package:task_manager_app/logic/cubits/notifications/notifications_cubit.dart';
 import 'package:task_manager_app/logic/cubits/statistics/statistics_cubit.dart';
 import 'package:task_manager_app/presentation/screens/statistics/statistics_screen.dart';
 import 'package:task_manager_app/presentation/screens/task_details/task_details_screen.dart';
@@ -28,7 +29,10 @@ class AppNavigator {
             routes: [
               GoRoute(
                 path: Routes.home,
-                builder: (context, state) => const HomeScreen(),
+                builder: (context, state) => BlocProvider<NotificationsCubit>(
+                  create: (context) => locator.get<NotificationsCubit>(),
+                  child: const HomeScreen(),
+                ),
               ),
             ],
           ),

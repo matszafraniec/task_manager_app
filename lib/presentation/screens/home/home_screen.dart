@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
 import 'package:task_manager_app/presentation/common/dimensions.dart';
 import 'package:task_manager_app/presentation/common/ui/empty_app_bar.dart';
+import 'package:task_manager_app/presentation/screens/home/widgets/notifications_section/notifications_section.dart';
 import 'package:task_manager_app/presentation/screens/home/widgets/tasks_section/tasks_section.dart';
 
 import '../../common/routing/routes.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            NotificationsSection(),
             TasksSection(),
           ],
         ),

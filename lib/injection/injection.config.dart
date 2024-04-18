@@ -14,8 +14,9 @@ import 'package:injectable/injectable.dart' as _i2;
 import '../data/data_providers/tasks_service/tasks_service.dart' as _i4;
 import '../data/data_sources/local/local_database_source.dart' as _i5;
 import '../data/repositories/tasks_repository.dart' as _i6;
-import '../logic/cubits/task_details/task_details_cubit.dart' as _i7;
-import '../logic/cubits/tasks/tasks_cubit.dart' as _i8;
+import '../logic/cubits/notifications/notifications_cubit.dart' as _i7;
+import '../logic/cubits/task_details/task_details_cubit.dart' as _i8;
+import '../logic/cubits/tasks/tasks_cubit.dart' as _i9;
 import '../presentation/common/routing/app_navigator.dart' as _i3;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -34,16 +35,18 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i4.TasksServiceImpl(gh<_i5.LocalDatabaseSource>()));
     gh.lazySingleton<_i6.TasksRepository>(
         () => _i6.TasksRepositoryImpl(gh<_i4.TasksService>()));
-    gh.factoryParam<_i7.TaskDetailsCubit, String?, dynamic>((
+    gh.factory<_i7.NotificationsCubit>(
+        () => _i7.NotificationsCubit(tasksRepo: gh<_i6.TasksRepository>()));
+    gh.factoryParam<_i8.TaskDetailsCubit, String?, dynamic>((
       taskId,
       _,
     ) =>
-        _i7.TaskDetailsCubit(
+        _i8.TaskDetailsCubit(
           taskId: taskId,
           tasksRepo: gh<_i6.TasksRepository>(),
         ));
-    gh.factory<_i8.TasksCubit>(
-        () => _i8.TasksCubit(tasksRepo: gh<_i6.TasksRepository>()));
+    gh.factory<_i9.TasksCubit>(
+        () => _i9.TasksCubit(tasksRepo: gh<_i6.TasksRepository>()));
     return this;
   }
 }

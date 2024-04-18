@@ -3,6 +3,7 @@ import 'package:task_manager_app/data/models/enums/tasks_filter/dto/tasks_filter
 enum TasksFilter {
   all,
   today,
+  inProgress,
   highPriority;
 
   TasksFilterDto toDto() {
@@ -13,6 +14,8 @@ enum TasksFilter {
         return TasksFilterDto.today;
       case TasksFilter.highPriority:
         return TasksFilterDto.highPriority;
+      case TasksFilter.inProgress:
+        return TasksFilterDto.inProgress;
       default:
         return TasksFilterDto.all;
     }
@@ -24,6 +27,8 @@ enum TasksFilter {
         return 'All';
       case TasksFilter.today:
         return 'Today';
+      case TasksFilter.inProgress:
+        return 'In progress';
       case TasksFilter.highPriority:
         return 'High priority';
     }

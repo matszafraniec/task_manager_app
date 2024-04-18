@@ -17,7 +17,11 @@ class TasksFiltersBuilder extends StatelessWidget {
           return TasksFilterSelector(
             state.filter,
             tasksCount: state.tasks.length,
-            onValueChanged: context.read<TasksCubit>().onFilterSet,
+            onValueChanged: (value) {
+              if (state.filter == value) return;
+
+              context.read<TasksCubit>().onFilterSet(value);
+            },
           );
         }
 

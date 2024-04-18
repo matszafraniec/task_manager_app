@@ -21,7 +21,8 @@ class NoItemsText extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: context.themeTexts.bodyLarge,
+              style: context.themeTexts.bodyLarge!
+                  .copyWith(color: Colors.blueGrey),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -48,7 +49,7 @@ class CustomDivider extends StatelessWidget {
         padding: padding,
         child: Container(
           height: 1,
-          color: context.themeColors.primary,
+          color: Colors.blueGrey.withOpacity(0.5),
         ),
       ),
     );

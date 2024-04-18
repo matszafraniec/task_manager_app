@@ -39,10 +39,12 @@ class _TasksFilterSelectorState extends State<TasksFilterSelector> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingM),
-      child: Column(
-        children: [
-          Row(
+      padding: const EdgeInsetsDirectional.only(start: Dimensions.paddingM),
+      child: SizedBox(
+        height: 35,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
             children: [
               FilterSelectorButton(
                 TasksFilter.all,
@@ -63,6 +65,15 @@ class _TasksFilterSelectorState extends State<TasksFilterSelector> {
               ),
               const SizedBox(width: Dimensions.paddingS),
               FilterSelectorButton(
+                TasksFilter.inProgress,
+                onPressed: () => _onSelectionUpdate(TasksFilter.inProgress),
+                isSelected: currentSelection == TasksFilter.inProgress,
+                count: widget.selectedFilter == TasksFilter.inProgress
+                    ? widget.tasksCount
+                    : null,
+              ),
+              const SizedBox(width: Dimensions.paddingS),
+              FilterSelectorButton(
                 TasksFilter.highPriority,
                 onPressed: () => _onSelectionUpdate(TasksFilter.highPriority),
                 isSelected: currentSelection == TasksFilter.highPriority,
@@ -72,7 +83,7 @@ class _TasksFilterSelectorState extends State<TasksFilterSelector> {
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -94,7 +105,10 @@ class FilterSelectorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 125,
+      ),
       child: Material(
         type: MaterialType.card,
         elevation: isSelected ? 1.5 : 0,
@@ -108,7 +122,7 @@ class FilterSelectorButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           onTap: onPressed,
           child: Padding(
-            padding: const EdgeInsetsDirectional.all(Dimensions.paddingS),
+            padding: const EdgeInsetsDirectional.all(6),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

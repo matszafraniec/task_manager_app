@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager_app/presentation/common/context_extensions.dart';
+import 'package:task_manager_app/presentation/common/ui/no_items_text.dart';
 
 import '../../../../../../logic/cubits/tasks/tasks_cubit.dart';
 import 'tasks_grid.dart';
@@ -17,7 +18,7 @@ class TasksGridBuilder extends StatelessWidget {
           return const CircularProgressIndicator();
         } else if (state is TasksPopulatedSuccess) {
           if (state.tasks.isEmpty) {
-            return const SizedBox();
+            return const NoItemsText('No tasks found ✌️');
           } else {
             return const TasksGrid();
           }
