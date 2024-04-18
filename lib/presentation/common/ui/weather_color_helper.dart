@@ -15,7 +15,7 @@ class WeatherColorHelper {
         return Colors.red;
       case 31:
         return Colors.blueAccent;
-      case 32:
+      case 32 && 33:
         return Colors.blue;
       default:
         return Colors.grey;

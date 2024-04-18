@@ -43,7 +43,7 @@ class WheaterIcon extends StatelessWidget {
         return Icons.thermostat;
       case 31:
         return Icons.ac_unit;
-      case 32:
+      case 32 && 33:
         return Icons.air;
       default:
         return Icons.help;
