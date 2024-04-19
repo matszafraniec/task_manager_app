@@ -37,7 +37,7 @@ enum TasksFilterDto {
         return Finder(
           filter: Filter.equals(
             'status',
-            TaskStatus.inProgress,
+            TaskStatus.inProgress.name,
           ),
         );
       case TasksFilterDto.highPriority:
