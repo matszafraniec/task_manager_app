@@ -1,6 +1,6 @@
 # Personal Task Manager application
 
-Sample personal task manager application written in Flutter.
+Sample personal task manager application written in Flutter. Recruitment exercise.
 
 <img src="/demo.gif" width="240" height="480"/>
 
